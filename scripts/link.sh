@@ -21,11 +21,13 @@ link() {
   echo "link   ~/$rel -> $1"
 }
 
-link zsh/zshrc            .zshrc
-link zsh/p10k.zsh         .p10k.zsh
-link git/config           .config/git/config
-link git/ignore           .config/git/ignore
-link mise/config.toml     .config/mise/config.toml
-link mise/mise.lock       .config/mise/mise.lock
-link ghostty/config       .config/ghostty/config
-link claude/settings.json .claude/settings.json
+link zsh/zshrc                  .zshrc
+link zsh/p10k.zsh               .p10k.zsh
+link git/config                 .config/git/config
+link git/ignore                 .config/git/ignore
+link mise/config.toml           .config/mise/config.toml
+link mise/mise.lock             .config/mise/mise.lock
+link ghostty/config             .config/ghostty/config
+link zed/settings.json          .config/zed/settings.json
+link ccstatusline/settings.json .config/ccstatusline/settings.json
+link claude/settings.json       .claude/settings.json

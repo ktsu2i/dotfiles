@@ -4,10 +4,12 @@ macOS dotfiles. Each tool has its own directory, and `scripts/link.sh` symlinks 
 
 | Directory | Linked to |
 |---|---|
+| `ccstatusline/` | `~/.config/ccstatusline/settings.json` |
 | `claude/` | `~/.claude/settings.json` |
 | `ghostty/` | `~/.config/ghostty/config` |
 | `git/` | `~/.config/git/{config,ignore}` |
 | `mise/` | `~/.config/mise/{config.toml,mise.lock}` |
+| `zed/` | `~/.config/zed/settings.json` |
 | `zsh/` | `~/.zshrc`, `~/.p10k.zsh` |
 
 ## Who manages what
