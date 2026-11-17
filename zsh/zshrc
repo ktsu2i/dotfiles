@@ -5,10 +5,16 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# cdr
+# History
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
+setopt share_history        # share history across sessions
+setopt hist_ignore_all_dups # drop older duplicates
+setopt hist_ignore_space    # skip commands starting with a space
+setopt hist_reduce_blanks
+
+# cdr
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 add-zsh-hook chpwd chpwd_recent_dirs
 
@@ -23,8 +29,8 @@ alias gb='git branch'
 alias dco='docker compose'
 
 # other aliases
-alias cat='bat' # brew install bat
-alias ls='eza --icons' # brew install eza
+alias cat='bat'
+alias ls='eza --icons'
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
@@ -41,9 +47,14 @@ autoload -Uz _zinit
 ### End of Zinit's installer chunk
 
 # Zinit plugins
-zinit light zsh-users/zsh-syntax-highlighting
-zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-completions
+zinit light zsh-users/zsh-autosuggestions
+
+# Completion (after zsh-completions adds to fpath)
+autoload -Uz compinit && compinit
+
+# Must be loaded last among plugins
+zinit light zsh-users/zsh-syntax-highlighting
 
 # powerlevel10k
 zinit ice depth=1; zinit light romkatv/powerlevel10k
@@ -78,13 +89,13 @@ setopt noflowcontrol
 bindkey '^k' fzf-cdr
 
 # ctrl+b: Git ブランチを検索する
-user_name=$(git config user.name)
-fmt="\
+function select-git-branch() {
+  local user_name=$(git config user.name)
+  local fmt="\
 %(if:equals=$user_name)%(authorname)%(then)%(color:default)%(else)%(color:brightred)%(end)%(refname:short)|\
 %(committerdate:relative)|\
 %(subject)"
-function select-git-branch() {
-  selected_branch=$(
+  local selected_branch=$(
     git branch --sort=-committerdate --format=$fmt --color=always \
     | column -ts'|' \
     | fzf --ansi --exact --preview='git log --oneline --graph --decorate --color=always -50 {+1}' \
@@ -97,19 +108,13 @@ function select-git-branch() {
 zle -N select-git-branch
 bindkey '^b' select-git-branch
 
-# Golang
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
+# Go
+export PATH="$PATH:$HOME/go/bin"
 
 # mise
 eval "$(mise activate zsh)"
 
-# Herd injected PHP 8.4 configuration.
-export HERD_PHP_84_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/84/"
+# ghcup
+[ -f "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env"
 
-
-# Herd injected PHP binary.
-export PATH="$HOME/Library/Application Support/Herd/bin/":$PATH
-
-[ -f "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env" # ghcup-env
 export PATH="$HOME/.local/bin:$PATH"
