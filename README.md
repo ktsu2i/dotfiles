@@ -19,7 +19,7 @@ Then:
 
 - Create `~/.config/git/config.local` (`[user] email = ...`)
 - Create `~/.config/ghostty/background` (optional)
-- Set up SSH keys and run `gh auth login`
+- Run `gh auth login`
 - Sign in to apps and grant privacy permissions
 
 ## Update
