@@ -1,0 +1,7 @@
+[user]
+	name = ktsu2i
+[credential]
+	helper = osxkeychain
+# Machine-local, untracked: user.email and anything else private.
+[include]
+	path = config.local

@@ -1,0 +1,35 @@
+theme = Iceberg Dark
+
+font-family = JetBrainsMonoNL Nerd Font Mono
+
+font-feature = -calt
+font-feature = -dlig
+
+font-size = 16
+
+window-inherit-working-directory = true
+
+window-padding-x = 10
+window-padding-y = 10
+window-height = 51
+window-width = 176
+
+window-save-state = always
+
+# Machine-local, untracked: background-image and friends.
+config-file = ?background
+
+background-opacity = 1.0
+background-blur-radius = 10
+
+quick-terminal-position = "bottom"
+
+keybind = "global:cmd+shift+space=toggle_quick_terminal"
+keybind = "cmd+left=previous_tab"
+keybind = "cmd+right=next_tab"
+keybind = "cmd+k=text:\x0c"
+
+macos-titlebar-style = tabs
+macos-window-buttons = hidden
+
+mouse-hide-while-typing

@@ -1,0 +1,117 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# cdr
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+add-zsh-hook chpwd chpwd_recent_dirs
+
+# git alias
+alias gad='git add .'
+alias gcm='git commit -m'
+alias gpo='git push origin'
+alias gs='git switch'
+alias gb='git branch'
+
+# docker compose alias
+alias dco='docker compose'
+
+# other aliases
+alias cat='bat' # brew install bat
+alias ls='eza --icons' # brew install eza
+
+### Added by Zinit's installer
+if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
+    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
+        print -P "%F{33} %F{34}Installation successful.%f%b" || \
+        print -P "%F{160} The clone has failed.%f%b"
+fi
+
+source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+### End of Zinit's installer chunk
+
+# Zinit plugins
+zinit light zsh-users/zsh-syntax-highlighting
+zinit light zsh-users/zsh-autosuggestions
+zinit light zsh-users/zsh-completions
+
+# powerlevel10k
+zinit ice depth=1; zinit light romkatv/powerlevel10k
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# fzf
+export FZF_DEFAULT_OPTS="--reverse --sync --ansi --cycle --no-sort"
+
+# fzf shortcuts
+# ctrl+r: コマンド履歴を検索する
+function select-history() {
+  BUFFER=$(history -n -r 1 | fzf --query "$LBUFFER" --reverse)
+  CURSOR=$#BUFFER
+  zle reset-prompt
+}
+zle -N select-history
+bindkey '^r' select-history
+
+# ctrl+k: 過去に訪れたディレクトリに移動する
+function fzf-cdr() {
+  local selected_dir=$(cdr -l | awk '{ print $2 }' | fzf --reverse)
+  if [ -n "$selected_dir" ]; then
+    BUFFER="cd ${selected_dir}"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+zle -N fzf-cdr
+setopt noflowcontrol
+bindkey '^k' fzf-cdr
+
+# ctrl+b: Git ブランチを検索する
+user_name=$(git config user.name)
+fmt="\
+%(if:equals=$user_name)%(authorname)%(then)%(color:default)%(else)%(color:brightred)%(end)%(refname:short)|\
+%(committerdate:relative)|\
+%(subject)"
+function select-git-branch() {
+  selected_branch=$(
+    git branch --sort=-committerdate --format=$fmt --color=always \
+    | column -ts'|' \
+    | fzf --ansi --exact --preview='git log --oneline --graph --decorate --color=always -50 {+1}' \
+    | awk '{ print $1 }'
+  )
+  BUFFER="${LBUFFER}${selected_branch}${RBUFFER}"
+  CURSOR=$#LBUFFER+$#selected_branch
+  zle redisplay
+}
+zle -N select-git-branch
+bindkey '^b' select-git-branch
+
+# Golang
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+
+# mise
+eval "$(mise activate zsh)"
+
+# Herd injected PHP 8.4 configuration.
+export HERD_PHP_84_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/84/"
+
+
+# Herd injected PHP binary.
+export PATH="$HOME/Library/Application Support/Herd/bin/":$PATH
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+
+[ -f "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env" # ghcup-env
+export PATH="$HOME/.local/bin:$PATH"
