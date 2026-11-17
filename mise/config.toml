@@ -20,6 +20,4 @@ tinygo = "0.41.1"
 
 [settings]
 idiomatic_version_file_enable_tools = ["node"]
-# Skip versions released less than 7 days ago when resolving fuzzy requests
-# (e.g. `mise upgrade --bump`). Exact pins above are not filtered.
 minimum_release_age = "7d"
