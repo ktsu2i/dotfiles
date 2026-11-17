@@ -30,6 +30,7 @@ link mise/config.toml           .config/mise/config.toml
 link mise/mise.lock             .config/mise/mise.lock
 link ghostty/config             .config/ghostty/config
 link gh/config.yml              .config/gh/config.yml
+link hunk/config.toml           .config/hunk/config.toml
 link zed/settings.json          .config/zed/settings.json
 link ccstatusline/settings.json .config/ccstatusline/settings.json
 link claude/settings.json       .claude/settings.json
