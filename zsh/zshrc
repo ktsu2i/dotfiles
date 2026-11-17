@@ -111,7 +111,5 @@ export HERD_PHP_84_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/p
 # Herd injected PHP binary.
 export PATH="$HOME/Library/Application Support/Herd/bin/":$PATH
 
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
-
 [ -f "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env" # ghcup-env
 export PATH="$HOME/.local/bin:$PATH"
