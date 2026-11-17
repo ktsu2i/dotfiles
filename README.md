@@ -10,7 +10,7 @@ macOS dotfiles. Each tool has its own directory, and `scripts/link.sh` symlinks 
 | `git/` | `~/.config/git/{config,ignore}` |
 | `mise/` | `~/.config/mise/{config.toml,mise.lock}` |
 | `zed/` | `~/.config/zed/settings.json` |
-| `zsh/` | `~/.zshrc`, `~/.p10k.zsh` |
+| `zsh/` | `~/.zshrc`, `~/.zprofile`, `~/.p10k.zsh` |
 
 ## Who manages what
 

@@ -22,6 +22,7 @@ link() {
 }
 
 link zsh/zshrc                  .zshrc
+link zsh/zprofile               .zprofile
 link zsh/p10k.zsh               .p10k.zsh
 link git/config                 .config/git/config
 link git/ignore                 .config/git/ignore
