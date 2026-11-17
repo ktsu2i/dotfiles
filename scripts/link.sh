@@ -26,5 +26,6 @@ link zsh/p10k.zsh         .p10k.zsh
 link git/config           .config/git/config
 link git/ignore           .config/git/ignore
 link mise/config.toml     .config/mise/config.toml
+link mise/mise.lock       .config/mise/mise.lock
 link ghostty/config       .config/ghostty/config
 link claude/settings.json .claude/settings.json

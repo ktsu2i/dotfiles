@@ -7,14 +7,14 @@ macOS dotfiles. Each tool has its own directory, and `scripts/link.sh` symlinks 
 | `claude/` | `~/.claude/settings.json` |
 | `ghostty/` | `~/.config/ghostty/config` |
 | `git/` | `~/.config/git/{config,ignore}` |
-| `mise/` | `~/.config/mise/config.toml` |
+| `mise/` | `~/.config/mise/{config.toml,mise.lock}` |
 | `zsh/` | `~/.zshrc`, `~/.p10k.zsh` |
 
 ## Who manages what
 
 | What | Managed by |
 |---|---|
-| Language runtimes and CLI tools | mise (`mise/config.toml`) |
+| Language runtimes and CLI tools | mise (`mise/config.toml`, `mise/mise.lock`) |
 | GUI apps and formulae that need system libraries or services | Homebrew (`Brewfile`) |
 | Config files | `scripts/link.sh` |
 
@@ -55,9 +55,11 @@ Edit files in `~` as usual; they are symlinks into this repo, so `git diff` here
 To add a config, put it under a directory named after the tool, add a `link` line to `scripts/link.sh`, and run `make link`.
 
 ```sh
-mise upgrade   # update tools pinned to "latest"
+mise upgrade --bump   # bump pins in config.toml and mise.lock (skips releases < 7 days old)
 brew upgrade
 ```
+
+mise tools are pinned to exact versions, and `mise/mise.lock` records their checksums. Review the diff after `mise upgrade --bump` before committing. To take a release newer than 7 days, pin it explicitly (`mise use -g tool@x.y.z`).
 
 Some tools replace a file instead of writing through the symlink. If `git status` stops showing your edits, check that the file in `~` is still a symlink.
 
